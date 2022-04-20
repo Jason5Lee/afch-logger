@@ -1,0 +1,11 @@
+[package]
+name = "afch-logger"
+version = "0.1.0-alpha.0"
+edition = "2021"
+description = "Logger for Azure Function Custom Handler"
+license = "MIT OR Apache-2.0"
+keywords = [ "azure", "serverless", "logger" ]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4"
