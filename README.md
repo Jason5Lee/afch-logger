@@ -6,9 +6,8 @@ abusing the undocumented (at least I don't know where) rule of e Function
 
 ## Usage
 
-You can initialize the log by `afch_logger::init_logger`. If you want to use the replacement logic
-in other logger, you can call `afch_logger::to_error_log` to get the replaced error log, and `afch_logger::contains_warn`
-to test whether the message contains `warn` (case insensitive).
+You can initialize the log by `afch_logger::init`. You can also implement your own transforming
+by implementing `afch_logger::Transform` trait and passing it to `afch_logger::init_transform`.
 
 ## Strategy
 
@@ -18,6 +17,6 @@ level log by Azure Function runtime.
 If you print a message to stderr, then it will be consider `Error` if it does not contain `warn` (case insensitive),
 otherwise it will be `Warning`.
 
-So the strategy is, for error-level log, we find the occurence of `warn` and replace `r` by `𝗋`(\U+1d5cb)
-and `R` by `𝖱`(\U+1d5b1). For warning-level log, if `warn` does not occur, we add a `warning:` prefix.
-
+So the default strategy is, for error-level log, if `warn` occurs, base64-encode it, if the encoded string still contains `warn`,
+base-encode again, and if the twice-encoded string still contains `warn` (which should be impossible), log an error explain that the
+following warning is error, then log it as a warning. For warning-level log, if `warn` does not occur, add a `warning:` prefix.
